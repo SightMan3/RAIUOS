@@ -1,0 +1,109 @@
+
+-- writes c on display --
+mov ah, 0x0e
+mov al, 'c'
+int 0x10
+
+-- loop that increments al register by one-- 
+loop:
+    inc al
+    int 0x10
+    jmp loop
+
+
+
+
+
+-- program that compares number with register --
+-- if its true, label is called --
+-- if not, jmp $ is called --
+mov bx, 5
+cmp bx, 5
+je label
+
+jmp $
+
+label:
+    mov ah, 0x0e
+    mov al, 'X'
+    int 0x10
+jmp $
+
+
+
+
+--- keyboard handle ---
+[org 0x7c00]
+mov ah, 0x0e
+
+mov bx, string
+mov cx, 10
+
+read:
+    
+	mov ah, 0
+	int 0x16
+
+	cmp al, 0xd
+	je enter
+	cmp cx, 0
+	je read
+
+	mov ah, 0x0e
+	int 0x10
+
+	mov [bx], al
+	inc bx
+
+	dec cx
+	jmp read
+
+enter:
+    mov ah, 0xe
+    mov al, 0xd
+    int 0x10
+
+    mov al, 0xa
+    int 0x10
+
+    mov bx, string
+
+    mov al, [bx]
+    cmp al, 0
+    je exit
+    int 0x10
+    inc bx
+    jmp enter
+
+string:
+    times 10 db 0
+    db 0
+
+exit:
+    jmp $
+
+
+
+
+
+-- 32 bits label with printing A --
+[bits 32]
+start_protected_mode:
+    mov al, 'A'
+    mov ah, 0x0f
+    mov [0xb8000], ax
+    jmp $
+
+
+
+-- need to see VGA color handling --
+-- not only for ASM but also for C --
+
+
+
+
+
+-- for bash file to create vdi --
+dd if=RAIUIS.bin of=/mnt/sdb1/
+a potom 
+dd if=/dev/sdb of=~/disk.vdi
