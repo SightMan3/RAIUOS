@@ -156,8 +156,9 @@ class KBOARD_DRIVER
                     ch = MAPKeB::conv(code);
                     VGA::文字書く(ch, fore, back);
 
-                }
-                          
+                } 
+
+                 
                 休む(0x02FFFFFF);
                 
 

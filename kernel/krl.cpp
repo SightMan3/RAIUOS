@@ -13,11 +13,36 @@ extern "C" int main()
     VGA::init_vga();
 
     
-    VGA::几帳書く("sak ale dobre", VGA_LIGHT_RED, VGA_BLACK);
-    VGA::新しい_ライン();
-    VGA::几帳書く("ced hej", VGA_LIGHT_RED, VGA_BLACK);
+    VGA::四角書く(
+        VGA_LIGHT_RED, VGA_BLACK,
+        20, 7, 15, 15
+    );
+    VGA::四角書く(
+        VGA_LIGHT_RED, VGA_BLACK,
+        40, 7, 15, 15
+    );
 
-	
+    char ch = 0;
+    do {
+
+        ch = KBOARD_DRIVER::get_input_keycode();
+        VGA::ピクセル書く(ch, VGA_LIGHT_RED, VGA_BLACK);
+
+        uint32_t time = 0x02FFFFFF;
+        while (1)
+        {
+            asm volatile("nop");
+            time--;
+            
+            if (time <= 0)
+            {
+                break;
+            }
+        }
+    } while (ch > 0);
+
+
+
 
     return 0;
 }
